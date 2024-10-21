@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   // 입력(entry) 파일
   entry: {
-    main: ['./src/js/main.js', './src/js/main_canvas.js'],
+    main: './src/js/main.js',
     about: './src/js/about.js',
     solution: ['./src/js/solution.js', './src/js/solution_canvas.js'],
   },
