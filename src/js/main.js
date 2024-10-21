@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     constructor(path, name) {
       this.name = name;
       this.path = path;
-      this.src = `/src/image/${name}.webp`;
+      this.src = `src/image/${name}.webp`;
       this.width = this.getWidth();
       this.height = this.getHeight();
       this.scaledPath = this.scalePath();
