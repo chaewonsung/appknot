@@ -151,11 +151,6 @@
     position: relative;
     align-self: flex-end;
 
-    .we-have,
-    .solutions {
-      @include rotate-wrapper;
-    }
-
     .we-have {
       position: absolute;
       top: 0;
@@ -183,10 +178,6 @@
       width: max-content;
       display: flex;
       flex-direction: column;
-
-      & > * {
-        @include rotate-wrapper;
-      }
     }
 
     .en {
@@ -432,7 +423,6 @@
   .article.active {
     .article__strong > *,
     .article__p > * {
-      @include rotate-wrapper();
     }
   }
 }
@@ -524,6 +514,7 @@
     }
 
     &__contents {
+      position: relative;
       color: #fff;
     }
   }

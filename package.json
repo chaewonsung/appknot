@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack -w",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d ."
   },
   "keywords": [],
   "author": "",
@@ -27,6 +26,7 @@
   },
   "dependencies": {
     "gsap": "^3.12.5",
+    "jquery": "^3.7.1",
     "lodash": "^4.17.21",
     "matter-js": "^0.20.0",
     "pathseg": "^1.2.1",

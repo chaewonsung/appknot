@@ -5,7 +5,6 @@
 //   padding-bottom: 100px;
 // }
 
-
 .header {
   color: #000;
   .logo {
@@ -31,6 +30,7 @@
 
   &__sub {
     position: absolute;
+    left: 0;
     width: 100%;
     text-align: center;
 
@@ -260,22 +260,6 @@
     .en {
       font-size: 0.65em;
     }
-    .hover-text {
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 1.218vw;
-      border: 1px solid rgb(99, 99, 99);
-      border-radius: 5vw;
-      background-color: #393939;
-      padding: 1vw 1.5vw;
-      transform: rotate(-10deg);
-      opacity: 0;
-    }
-
-    &:hover .hover-text {
-      opacity: 1;
-    }
   }
 
   &__btn {
@@ -313,6 +297,18 @@
     &:hover:after {
       transform: translateY(0) rotate(0deg);
     }
+  }
+
+  &__hover-text {
+    position: absolute;
+    font-size: 1.218vw;
+    border: 1px solid rgb(99, 99, 99);
+    border-radius: 5vw;
+    background-color: #393939;
+    padding: 1vw 1.5vw;
+    transform: rotate(-10deg);
+    z-index: 1;
+    opacity: 0;
   }
 }
 
@@ -422,7 +418,8 @@
         line-height: 5vw;
       }
       img {
-        height: 90%;
+        width: 4.5vw;
+        transform: translateY(0.3vw);
       }
     }
   }
@@ -510,3 +507,5 @@
     }
   }
 }
+
+

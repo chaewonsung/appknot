@@ -16,24 +16,36 @@
 }
 
 /* mixin */
-@mixin rotate-wrapper {
-  overflow: hidden;
+// @mixin rotate-wrapper {
+//   overflow: hidden;
 
-  & > * {
+//   [class*='rotate'] {
+//     display: block;
+//     transform-origin: left center;
+//     animation: appearWithRotate 0.7s both 0.5s;
+//     animation-play-state: paused;
+//   }
+
+//   .right {
+//     text-align: end;
+//   }
+// }
+
+.rotate-wrapper {
+  overflow: hidden;
+  span {
     display: block;
     transform-origin: left center;
-    animation: appearWithRotate 1.3s both 0.5s;
-  }
-
-  .right {
-    text-align: end;
+    animation: appearWithRotate 0.7s both;
+    animation-play-state: paused;
+    &.right {
+      text-align: right;
+    }
   }
 }
-
-.rotate.in {
-  .rotate__text-box,
-  &.rotate__text-box {
-    @include rotate-wrapper;
+.rotate-point.in {
+  span {
+    animation-play-state: running;
   }
 }
 

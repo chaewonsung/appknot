@@ -10,24 +10,13 @@ import _ from 'lodash';
 
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
+import { each } from 'jquery';
 
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   new Header(document.querySelector('.header'));
   new Footer(document.querySelector('.footer'));
-
-  /* rotate-text */
-  document.querySelectorAll('.rotate').forEach((elem) => {
-    new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          elem.classList.add('in');
-          observer.unobserve(elem);
-        }
-      });
-    }).observe(elem);
-  });
 
   /**
    * section-history.js
@@ -129,10 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
     clipPathX * clipPathX + clipPathY * clipPathY
   );
 
-  gsap
+  const aboutSecTl = gsap
     .timeline({
       scrollTrigger: {
-        id: 'aboutSec',
         trigger: '.section-about',
         start: 'top top',
         end: '+=4000',
@@ -174,6 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
         ease: 'none',
       },
     });
+
+  ScrollTrigger.create({
+    trigger: '.section-about .horizontal03__text',
+    containerAnimation: aboutSecTl,
+    start: 'left 80%',
+    onEnter: () =>
+      gsap.set('.section-about .horizontal03__text .rotate-wrapper span', {
+        animationPlayState: 'running',
+      }),
+  });
 
   const cardArr = gsap.utils.toArray('.section-about .horizontal03 .card');
   const cardHeight = cardArr[0].offsetHeight;
@@ -317,27 +315,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // random text
   splitTextIntoSpan('.section-earth__text--big .text-wrap');
 
-  const randomTextTl = gsap.timeline({ paused: true });
+  const randomTextTween = gsap.fromTo(
+    '.section-earth__text--big span',
+    { autoAlpha: 0 },
+    {
+      autoAlpha: 1,
+      stagger: { each: 0.05, from: 'random' },
+      paused: true,
+    }
+  );
 
-  gsap.utils.toArray('.section-earth__text--big span').forEach((span) => {
-    randomTextTl.fromTo(
-      span,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.2 },
-      gsap.utils.random(0, 1.2)
-    );
+  ScrollTrigger.create({
+    trigger: '.section-earth',
+    start: 'top 70%',
+    onEnter() {
+      randomTextTween.play();
+    },
   });
-
-  new IntersectionObserver(
-    (entries, observer) =>
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          randomTextTl.play();
-          observer.unobserve(document.querySelector('.section-earth'));
-        }
-      }),
-    { threshold: 0.2 }
-  ).observe(document.querySelector('.section-earth'));
 
   // talk part animation
   const $talk = document.querySelector('.section-earth__talk');
@@ -381,4 +375,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('resize', handleResize);
+
+  /* rotate-text */
+  ScrollTrigger.batch('.rotate-point', {
+    start: 'bottom bottom',
+    onEnter: (batch) => batch.forEach((el) => el.classList.add('in')),
+  });
 });

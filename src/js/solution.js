@@ -345,7 +345,7 @@ window.onload = () => {
       start: '0 0',
       end: () => `+=${$popeeSecInner.offsetWidth - innerWidth}`,
       pin: true,
-      scrub: 1,
+      scrub: 0,
       invalidateOnRefresh: true,
     },
   });
@@ -358,8 +358,7 @@ window.onload = () => {
       scrollTrigger: {
         trigger: '.section-popee__horizontal-02',
         containerAnimation: popeeSecTween,
-        start: '30% right',
-        // markers: true,
+        start: '50% right',
       },
     })
     .fromTo(
@@ -380,18 +379,15 @@ window.onload = () => {
       0
     );
 
-  // text rotation
-  gsap.set('.section-popee__horizontal-02 .article', { opacity: 0 });
-
   ScrollTrigger.create({
-    trigger: '.section-popee__horizontal-02 .article',
+    trigger: horizontal02('.article'),
     containerAnimation: popeeSecTween,
-    start: '50% right',
+    start: 'right+=80% right',
     // markers: true,
-    onEnter(self) {
-      gsap.set(self.trigger, { opacity: 1 });
-      self.trigger.classList.add('active');
-    },
+    onEnter: () =>
+      gsap.set(horizontal02('.rotate-wrapper span'), {
+        animationPlayState: 'running',
+      }),
   });
 
   // horizontal-03
@@ -403,9 +399,7 @@ window.onload = () => {
       containerAnimation: popeeSecTween,
       start: '20% right',
       scrub: 2,
-      onEnter() {
-        runMatter();
-      },
+      onEnter: runMatter,
     },
   });
 
@@ -446,6 +440,7 @@ window.onload = () => {
       bottom: 0,
       ease: 'elastic.out',
       duration: 2,
+      stagger: 0.2,
     });
 
   function handleResize() {
@@ -459,4 +454,13 @@ window.onload = () => {
   }
 
   window.onresize = debounce(handleResize, 200);
+
+  /* rotate-text */
+  gsap.utils.toArray('.rotate-point').forEach((item) => {
+    ScrollTrigger.create({
+      trigger: item,
+      start: 'top bottom',
+      onEnter: (self) => self.trigger.classList.add('in'),
+    });
+  });
 };

@@ -9,22 +9,22 @@ export default class Header extends Component {
        <div class="header__nav header__nav--wide">
         <nav class="nav">
           <ul class="nav__list">
-            <li><a href="#">solution</a></li>
-            <li><a href="#">about</a></li>
+            <li><a href="solution.html">solution</a></li>
+            <li><a href="about.html">about</a></li>
             <li><a href="#">work</a></li>
             <li><a href="#">contact</a></li>
           </ul>
         </nav>
       </div>
       <div class="header__logo">
-        <div class="logo">appknot</div>
+        <div class="logo"><a href="index.html">appknot</a></div>
       </div>
       <div class="header__nav header__nav--narrow">
         <nav class="nav">
           <div class="nav__bg"></div>
           <ul class="nav__list">
-            <li><a href="#">solution</a></li>
-            <li><a href="#">about</a></li>
+            <li><a href="solution.html">solution</a></li>
+            <li><a href="about.html">about</a></li>
             <li><a href="#">work</a></li>
             <li><a href="#">contact</a></li>
           </ul>
