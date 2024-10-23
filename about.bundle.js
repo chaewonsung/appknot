@@ -289,7 +289,7 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("module.exports = __webpack_require__.p + \"f25c87a9c0dc80bdb490.webp\";\n\n//# sourceURL=webpack://appknot_clone/./src/image/img_bg_about_earth.webp?");
+eval("module.exports = __webpack_require__.p + \"7716fb553e5fa3befc49.webp\";\n\n//# sourceURL=webpack://appknot_clone/./src/image/img_bg_about_earth.webp?");
 
 /***/ })
 
