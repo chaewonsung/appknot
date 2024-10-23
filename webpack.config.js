@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -5,15 +6,17 @@ module.exports = {
   entry: {
     main: './src/js/main.js',
     about: './src/js/about.js',
-    solution: ['./src/js/solution.js', './src/js/solution_canvas.js'],
+    solution: './src/js/solution.js',
   },
 
   // 출력(output) 설정
   output: {
     filename: '[name].bundle.js', // 번들링된 파일의 이름
-    path: path.resolve(__dirname, 'dist'), // 출력 파일이 저장될 디렉토리
+    path: path.resolve(__dirname, 'build'), // 출력 파일이 저장될 디렉토리
     clean: true, // 빌드 시 이전 출력 디렉토리의 파일을 정리
   },
+
+  plugins: [new HtmlWebpackPlugin()],
 
   // 모드(mode) 설정
   mode: 'development', // 'production'으로 설정하면 코드 최적화 및 압축이 진행됨
