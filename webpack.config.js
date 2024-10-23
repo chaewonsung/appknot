@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -14,6 +15,8 @@ module.exports = {
     path: path.resolve(__dirname, 'build'), // 출력 파일이 저장될 디렉토리
     clean: true, // 빌드 시 이전 출력 디렉토리의 파일을 정리
   },
+
+  plugins: [new HtmlWebpackPlugin()],
 
   // 모드(mode) 설정
   mode: 'development', // 'production'으로 설정하면 코드 최적화 및 압축이 진행됨
