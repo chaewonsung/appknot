@@ -22,7 +22,7 @@ import Matter from 'matter-js';
 
 // https://appknot.com/
 
-document.addEventListener('DOMContentLoaded', () => {
+window.onload = function () {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   new Header(document.querySelector('.header'));
@@ -411,4 +411,4 @@ document.addEventListener('DOMContentLoaded', () => {
       onEnter: (self) => self.trigger.classList.add('in'),
     });
   });
-});
+};
