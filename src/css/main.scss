@@ -19,12 +19,14 @@
 
 .intro-text {
   --height: 25vw;
+  --scale-to: 0.1;
+  --scaled-height: calc(var(--height) * var(--scale-to));
 
   position: sticky;
-  top: var(--header-padding);
+  top: calc((var(--header-height) / 2) - (var(--scaled-height) / 2));
   height: var(--height);
   margin-top: calc(100vh - var(--height));
-  padding-inline: 2.5%;
+  padding: 0 20px;
   pointer-events: none;
   z-index: 99;
 
@@ -47,12 +49,12 @@
 
   &__main {
     transform-origin: left top;
-    transition: all 1.3s ease-out;
+    transition: all 1.3s ease-in-out;
   }
 }
 .intro-text.on .intro-text__main {
-  transform: scale(0.1);
-  transition: all 1.3s ease-in-out;
+  transform: scale(var(--scale-to));
+  transition: 1s ease-in-out;
 }
 
 /* intro section */
@@ -72,6 +74,15 @@
   color: #fff;
   overflow: hidden;
 
+  &__contents {
+    position: relative;
+  }
+  &__contents-bg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
   &__bg {
     .img-box {
       transform-origin: 50% 100px;
@@ -211,20 +222,24 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  padding-top: 10%;
   background: #000;
   color: #fff;
   text-transform: uppercase;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+
+  &__inner {
+    width: 100%;
+  }
 
   &__h1 {
-    position: absolute;
-    top: 5.3%;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     z-index: 1;
     font-size: 8vw;
     pointer-events: none;
+    text-align: center;
+    margin-bottom: -25px;
   }
 
   &__list {
@@ -388,7 +403,7 @@
     position: relative;
     white-space: nowrap;
     margin-bottom: 5%;
-    padding: 0 30px;
+    padding: 30px 30px 0;
 
     &--small {
       position: absolute;
@@ -507,5 +522,3 @@
     }
   }
 }
-
-

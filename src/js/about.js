@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 import Header from '../components/Header.js';
 import Footer from '../components/Footer.js';
-import { each } from 'jquery';
+import $ from 'jquery';
 
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -25,98 +25,68 @@ document.addEventListener('DOMContentLoaded', () => {
   // year overlap
   const $introSec = document.querySelector('.section-intro');
 
-  $introSec.style.marginBottom =
-    -($introSec.offsetHeight - innerHeight || 0) + 'px';
+  // $introSec.style.marginBottom =
+  //   -($introSec.offsetHeight - innerHeight || 0) + 'px';
+
+  $('.section-intro').css(
+    'marginBottom',
+    -($introSec.offsetHeight - innerHeight || 0)
+  );
 
   // ipad animation
   ScrollTrigger.create({
-    trigger: '.section-history__contents-inner',
-    start: '5% bottom',
-    endTrigger: '.section-history',
-    end: 'bottom bottom',
-    onUpdate({ progress }) {
-      if (Math.floor(progress * 10) / 10 === 0.2)
-        historyTl.tweenTo('screen-on');
-      else if (Math.floor(progress * 10) / 10 === 0.4)
-        historyTl.tweenTo('text-on');
-      else if (Math.floor(progress * 10) / 10 === 0.6)
-        historyTl.tweenTo('screen-change');
-      else if (Math.floor(progress * 10) / 10 === 0.8)
-        historyTl.tweenTo(historyTl.duration());
+    trigger: '.section-history__contents',
+    end: '+=1000',
+    pin: true,
+    onUpdate({ progress, direction }) {
+      if (Math.floor(progress * 10) / 10 === 0.5) {
+        direction === 1 ? screenTl.play() : screenTl.reverse();
+      }
     },
   });
 
-  const historyTl = gsap.timeline({
-    defaults: { ease: 'power1.inOut' },
-    paused: true,
-  });
-  historyTl
-    .addLabel('screen-on')
-    .fromTo('.ipad__screen', { autoAlpha: 0 }, { autoAlpha: 1 })
-    .addLabel('text-on')
-    .fromTo('.section-history__text', { autoAlpha: 0 }, { autoAlpha: 1 })
-    .addLabel('screen-change')
-    .to('.ipad__screen img', { xPercent: -100, duration: 0.7 })
+  const screenTl = gsap
+    .timeline({ paused: true })
+    .to('.ipad__screen img', { xPercent: -100, ease: 'power1.inOut' })
     .set('.section-history__text .p--1', { autoAlpha: 0 }, '<50%')
     .set('.section-history__text .p--2', { autoAlpha: 1 }, '<50%');
+
+  $('.ipad, .section-history__text').each((i, elem) => {
+    const tween = gsap.fromTo(
+      elem,
+      { autoAlpha: 0 },
+      {
+        autoAlpha: 1,
+        paused: true,
+        duration: i === 0 ? 0.5 : 1,
+        ease: 'power1.inOut',
+        clearProps: 'all',
+      }
+    );
+    ScrollTrigger.create({
+      trigger: elem,
+      start: i === 0 ? 'center bottom' : 'bottom bottom',
+      onEnter: () => tween.play(),
+      onLeaveBack: () => tween.reverse(),
+    });
+  });
 
   /**
    * section-about__horizontal01.js
    */
-
-  // img infinite animation
-  const imgTween = gsap.to('.section-about .horizontal01__imgContainer img', {
-    yPercent: 10,
-    stagger: { each: 0.3, repeat: -1, yoyo: true },
-    duration: 2,
-    ease: 'none',
-    paused: true,
+  ScrollTrigger.create({
+    trigger: '.section-about .horizontal01',
+    toggleClass: 'in',
   });
-
-  new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) imgTween.play();
-      else imgTween.pause();
-    });
-  }).observe(document.querySelector('.section-about .horizontal01'));
-
-  /**
-   * section-about__horizontal02.js
-   */
-
-  // symbol infinite animation
-  const symbolTween = gsap.to('.section-about .horizontal02 .symbol', {
-    yPercent: 15,
-    rotation: 3,
-    stagger: { each: 0.5, repeat: -1, yoyo: true },
-    duration: 2,
-    ease: 'none',
-    paused: true,
-  });
-
-  new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) symbolTween.play();
-      else symbolTween.pause();
-    });
-  }).observe(document.querySelector('.section-about .horizontal02'));
 
   /**
    * section-about.js
    */
-
-  const opaTargets = document.querySelectorAll(
-    '.section-about .horizontal02 > *'
-  );
   const toggleClass = () => {
-    opaTargets.forEach((target) => target.classList.toggle('opa'));
+    $('.section-about .horizontal02 > *').each((i, target) =>
+      $(target).toggleClass('opa')
+    );
   };
-
-  let clipPathX = window.innerWidth * 0.85;
-  let clipPathY = window.innerHeight * 0.75;
-  let clipPathDiagnal = Math.sqrt(
-    clipPathX * clipPathX + clipPathY * clipPathY
-  );
 
   const aboutSecTl = gsap
     .timeline({
@@ -129,13 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         invalidateOnRefresh: true,
         onEnter: toggleClass,
         onLeaveBack: toggleClass,
-        onRefresh() {
-          clipPathX = window.innerWidth * 0.85;
-          clipPathY = window.innerHeight * 0.75;
-          clipPathDiagnal = Math.sqrt(
-            clipPathX * clipPathX + clipPathY * clipPathY
-          );
-        },
+        toggleClass: { targets: '.section-about .symbol', className: 'in' },
       },
     })
     .to('.section-about .horizontal02', {
@@ -143,7 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
         '0%': { clipPath: () => `circle(7vw at 85vw 25vh)` },
         '5%': { clipPath: () => `circle(7.5vw at 85vw 25vh)` },
         '100%': {
-          clipPath: () => `circle(${clipPathDiagnal}px at 85vw 25vh)`,
+          clipPath: () =>
+            `circle(${Math.sqrt(
+              (innerWidth * 0.85) ** 2 + (innerHeight * 0.75) ** 2
+            )}px at 85vw 25vh)`,
         },
       },
       duration: 0.3,
@@ -153,11 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       keyframes: {
         '0%': { x: 0 },
         '60%': {
-          x: () =>
-            -(
-              document.querySelector('.section-about .absolute').offsetWidth -
-              innerWidth
-            ),
+          x: () => -($('.section-about .absolute').outerWidth() - innerWidth),
         },
         ease: 'none',
       },
@@ -173,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }),
   });
 
-  const cardArr = gsap.utils.toArray('.section-about .horizontal03 .card');
-  const cardHeight = cardArr[0].offsetHeight;
+  const cardHeight = $('.section-about .horizontal03 .card').outerHeight();
+
   const cardTlDuration = 1.5;
 
   const cardTl = gsap.timeline({
@@ -188,37 +151,40 @@ document.addEventListener('DOMContentLoaded', () => {
     paused: true,
   });
 
-  cardTl
-    .fromTo(
-      cardArr[0],
-      { y: cardHeight, rotation: -15 },
-      {
-        y: '-10vh',
-        rotation: -15,
-      }
-    )
-    .fromTo(
-      cardArr[1],
-      { y: cardHeight, rotation: -20 },
-      { y: '-3vh', rotation: 20 },
-      0
-    )
-    .fromTo(
-      cardArr[2],
-      { y: '-90vh', rotation: -10 },
-      { y: '-26vh', rotation: -10 },
-      0
-    )
-    .fromTo(
-      cardArr[3],
-      { y: '-16vh', xPercent: 95, rotation: -10 },
-      {
-        y: '-16vh',
-        xPercent: 0,
-        rotation: 17,
-      },
+  const cardSettings = [
+    {
+      y: { from: cardHeight, to: '-10vh' },
+      rotation: { from: -15, to: -15 },
+    },
+    {
+      y: { from: cardHeight, to: '-3vh' },
+      rotation: { from: -20, to: 20 },
+    },
+    {
+      y: { from: '-90vh', to: '-26vh' },
+      rotation: { from: -10, to: -10 },
+    },
+    {
+      y: { from: '-16vh', to: '-16vh' },
+      rotation: { from: -10, to: 17 },
+      xPercent: { from: 95, to: 0 },
+    },
+  ];
+
+  cardSettings.forEach((obj, i) => {
+    const from = {};
+    const to = {};
+    for (const prop in obj) {
+      from[`${prop}`] = obj[`${prop}`].from;
+      to[`${prop}`] = obj[`${prop}`].to;
+    }
+    cardTl.fromTo(
+      gsap.utils.toArray('.section-about .horizontal03 .card')[i],
+      from,
+      to,
       0
     );
+  });
 
   ScrollTrigger.create({
     trigger: '.section-about .horizontal03 .card',
@@ -239,10 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .timeline({
       scrollTrigger: {
         trigger: '.section-card',
-        start: 'top top',
-        end: '+=1000',
+        end: '+=1500',
         pin: true,
-        scrub: 1,
+        scrub: 0,
       },
     })
     .fromTo(
@@ -256,13 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         keyframes: {
-          '10%': {
-            xPercent: 10,
-            yPercent: 20,
-            rotation: 5,
-            scale: 0.85,
-            borderRadius: 10,
-          },
           '90%': {
             xPercent: 0,
             yPercent: 0,
@@ -271,10 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
             borderRadius: 0,
           },
         },
+        ease: 'none',
+        duration: 0.7,
       }
     )
     .to('.section-card__videoBox', {
-      opacity: 0.3,
+      opacity: 0.1,
       ease: 'none',
       duration: 0.3,
     });
@@ -328,9 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ScrollTrigger.create({
     trigger: '.section-earth',
     start: 'top 70%',
-    onEnter() {
-      randomTextTween.play();
-    },
+    onEnter: () => randomTextTween.play(),
   });
 
   // talk part animation
@@ -356,14 +314,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     )
     .fromTo(
-      '.section-earth__talk .finger-emoji .right',
-      { x: '-5vw' },
-      { x: 0 },
-      0
-    )
-    .fromTo(
-      '.section-earth__talk .finger-emoji .left',
-      { x: '5vw' },
+      '.section-earth__talk .finger-emoji > *',
+      { x: (i) => (i == 0 ? '-5vw' : '5vw') },
       { x: 0 },
       0
     );
@@ -380,5 +332,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ScrollTrigger.batch('.rotate-point', {
     start: 'bottom bottom',
     onEnter: (batch) => batch.forEach((el) => el.classList.add('in')),
+    once: true,
   });
 });

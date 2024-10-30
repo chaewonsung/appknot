@@ -1,7 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Tilt+Neon&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tilt+Neon&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@100..900&family=IBM+Plex+Sans+KR&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tilt+Neon&display=swap');
+@import url('https://fonts.cdnfonts.com/css/euclid-circular-a');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
 /* animation */
 @keyframes appearWithRotate {
@@ -51,7 +49,6 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'Tilt Neon', sans-serif;
 }
 
 html,
@@ -60,19 +57,28 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-family: 'Euclid Circular A', sans-serif;
 }
 
 .container {
-  --header-padding: 30px;
   width: 100%;
+}
+.container.header-on {
+  .header {
+    color: white;
+  }
+  .intro-text__main g {
+    fill: white;
+  }
+}
+
+:root {
+  --header-height: 70px;
 }
 
 .ko {
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   // letter-spacing: -0.063rem;
-}
-.normal {
-  font-family: 'Inter', sans-serif;
 }
 
 .flex-end {
@@ -106,10 +112,10 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--header-padding);
+  height: var(--header-height);
+  padding: 0 20px;
   z-index: 999;
   transition: color 0.5s;
-  font-family: 'Tilt Neon', sans-serif;
 
   &__nav {
     position: absolute;
@@ -149,7 +155,7 @@ body {
     &--wide {
       width: 100%;
       display: none;
-      padding: var(--header-padding);
+      padding: inherit;
 
       .nav {
         display: flexbox;
@@ -164,11 +170,6 @@ body {
       }
     }
   }
-}
-
-.header.on {
-  color: #fff;
-  transition: color 0.5s;
 }
 
 .nav {
@@ -194,12 +195,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 60px;
-  padding: 0 20px 20px;
+  padding: 20px;
   text-transform: uppercase;
   background-color: #fff;
   color: #000;
   z-index: 9999;
-  font-family: 'Tilt Neon', sans-serif;
   .row1,
   .row2 {
     display: flex;
@@ -227,11 +227,14 @@ body {
     display: flex;
     flex-direction: column;
     font-size: min(7.2vw, 110px);
+    letter-spacing: -0.02em;
+    font-weight: 300;
     .tag {
       background: linear-gradient(
         rgba(255, 255, 255, 0.702),
         rgba(135, 135, 135, 0.043)
       );
+      cursor: pointer;
       color: inherit;
       border: 0.5px solid rgba(135, 135, 135, 0.502);
       position: absolute;

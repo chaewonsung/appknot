@@ -11,6 +11,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import $ from 'jquery';
+import { debounce } from 'lodash';
 
 import {
   yellowPath,
@@ -25,15 +26,14 @@ import Matter from 'matter-js';
 window.onload = function () {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  new Header(document.querySelector('.header'));
-  new Footer(document.querySelector('.footer'));
+  new Header($('.header')[0]);
+  new Footer($('.footer')[0]);
 
   /* Matter JS */
   (function () {
-    const $introSec = document.querySelector('.section-intro');
-    const canvas = document.querySelector('.section-intro__canvas');
-    const cw = $introSec.offsetWidth;
-    const ch = $introSec.offsetHeight;
+    const canvas = $('.section-intro__canvas')[0];
+    const cw = $('.section-intro').innerWidth();
+    const ch = $('.section-intro').innerHeight();
 
     const {
       Engine,
@@ -198,12 +198,8 @@ window.onload = function () {
   ScrollTrigger.create({
     trigger: '.intro-text',
     start: 'top top',
-    onEnter(self) {
-      self.trigger.classList.add('on');
-    },
-    onLeaveBack(self) {
-      self.trigger.classList.remove('on');
-    },
+    onEnter: (self) => self.trigger.classList.add('on'),
+    onLeaveBack: (self) => self.trigger.classList.remove('on'),
   });
 
   /* section-about.js */
@@ -223,21 +219,15 @@ window.onload = function () {
         scrub: 1,
         invalidateOnRefresh: true,
         onRefresh() {
-          setContentsBg();
+          $('.section-about__contents-bg').innerHeight(
+            $('.section-about__contents').outerHeight(true)
+          );
         },
         onLeave() {
-          gsap.to('.intro-text__main svg g', {
-            fill: 'rgb(255,255,255)',
-            stroke: 'rgb(255,255,255)',
-          });
-          document.querySelector('.header').classList.add('on');
+          $('.container').addClass('header-on');
         },
         onEnterBack() {
-          gsap.to('.intro-text__main svg g', {
-            fill: 'rgb(0,0,0)',
-            stroke: 'rgb(0,0,0)',
-          });
-          document.querySelector('.header').classList.remove('on');
+          $('.container').removeClass('header-on');
         },
       },
     }
@@ -260,112 +250,108 @@ window.onload = function () {
     0
   );
 
-  function setContentsBg() {
-    const $aboutSecContents = document.querySelector(
-      '.section-about__contents'
-    );
-    const $aboutSecContentsBg = document.querySelector(
-      '.section-about__contents-bg'
-    );
-
-    $aboutSecContentsBg.style.height =
-      $aboutSecContents.offsetHeight +
-      parseFloat(window.getComputedStyle($aboutSecContents).marginTop) +
-      'px';
-
-    $aboutSecContentsBg.style.marginTop =
-      -$aboutSecContentsBg.offsetHeight + 'px';
-  }
-
   /* section-work.js */
-  const workList = document.querySelector('.section-work__list');
-
-  gsap.to('.section-work__list', {
-    scrollTrigger: {
-      trigger: '.section-work',
-      start: 'top top',
-      end: () => '+=' + workList.offsetWidth,
-      pin: true,
-      anticipatePin: 0.5,
-      scrub: 1,
-      invalidateOnRefresh: true,
-    },
-    keyframes: {
-      '10%': { x: 0 },
-      '90%': {
-        x: () => -(workList.offsetWidth - document.body.clientWidth),
+  const workSecTween = gsap.fromTo(
+    '.section-work__list',
+    { x: 0 },
+    {
+      keyframes: {
+        '5%': { x: 0 },
+        '95%': {
+          x: (i, target) => -(target.offsetWidth - document.body.clientWidth),
+          ease: 'none',
+        },
       },
+      paused: true,
+    }
+  );
+
+  ScrollTrigger.create({
+    id: 'a',
+    trigger: '.section-work',
+    end:
+      '+=' +
+      ($('.section-work__list').outerWidth() - document.body.clientWidth),
+    pin: true,
+    anticipatePin: 0.5,
+    // scrub: 0,
+    invalidateOnRefresh: true,
+    onRefresh: () => {
+      workSecTween.vars.keyframes['95%'].x = -(
+        $('.section-work__list').outerWidth() - document.body.clientWidth
+      );
+      workSecTween.invalidate();
     },
+    onUpdate: debounce(
+      () =>
+        gsap.to(workSecTween, {
+          progress: ScrollTrigger.getById('a').progress,
+          ease: 'power2.inOut',
+        }),
+      50
+    ),
   });
 
   $('.section-work__item').each(function (i, item) {
     const target = $('.section-work__hover-text');
-    $(item)
-      .on('mouseenter', () => {
-        target.css('opacity', 1).text(`${item.dataset.hover}`);
-      })
-      .on('mouseleave', () => {
+    $(item).on({
+      mouseleave: () => {
         target.css('opacity', 0).text('');
-      })
-      .on('mousemove', (e) => {
-        target
-          .css(
-            'top',
-            `${e.clientY - $('.section-work')[0].getBoundingClientRect().top}px`
-          )
-          .css('left', `${e.clientX}px`);
-      });
+      },
+      mousemove: (e) => {
+        target.text(`${item.dataset.hover}`).css({
+          opacity: 1,
+          top: `${e.clientY - $('.section-work').offset().top}px`,
+          left: `${e.clientX}px`,
+        });
+      },
+    });
   });
 
   /* section-insight.js */
-  const $insightSec = document.querySelector('.section-insight');
-
   gsap
     .timeline({
       scrollTrigger: {
-        trigger: $insightSec,
+        id: 'insightSecST',
+        trigger: '.section-insight',
         start: 'top top',
         end: '+=1000',
         pin: true,
         anticipatePin: 0.5,
-        scrub: 1,
+        scrub: 0.5,
         invalidateOnRefresh: true,
       },
     })
     .to('.section-insight .card--handly', {
-      x: () => -$insightSec.clientWidth / 2,
+      xPercent: () => -130,
       rotation: 30,
     })
     .to(
       '.section-insight .card--mentor',
-      { x: () => $insightSec.clientWidth / 2, rotation: 15 },
+      { xPercent: () => 130, rotation: 15 },
       0
     );
 
   /* section-recruit.js */
-  const $recruitSec = document.querySelector('.section-recruit');
-
   // create line
-  $recruitSec.querySelectorAll('.line').forEach((line) => new Line(line));
+  $('.line').each((i, line) => new Line(line));
 
   // change bg-color
-  toggleClassWithIo($recruitSec, 'in', { threshold: 0.3 });
+  toggleClassWithIo($('.section-recruit')[0], 'in', { threshold: 0.3 });
 
   // slider
-  const $slider = document.querySelector('.slider');
-
   let initialProgress;
 
   const sliderScrolltrigger = ScrollTrigger.create({
-    trigger: $slider,
+    trigger: '.slider',
     endTrigger: '.footer',
     end: 'bottom bottom',
     scrub: 1,
-    onUpdate({ progress, direction }) {
+    onUpdate({ progress, direction, trigger }) {
       if (!initialProgress) {
         initialProgress = progress;
       }
-      gsap.to($slider, {
+      gsap.to(trigger, {
         rotationY:
           '+=' + Math.abs(initialProgress - progress) * 360 * direction,
         overwrite: true,
@@ -380,34 +366,41 @@ window.onload = function () {
   let isMouseDown = false;
   let movementX;
 
-  $slider.addEventListener('mousedown', () => {
-    isMouseDown = true;
-    sliderScrolltrigger.disable();
-    movementX = 0;
-  });
-  $slider.addEventListener('mousemove', (e) => {
-    if (isMouseDown) {
-      movementX += e.movementX;
+  $('.slider').on({
+    mousedown: () => {
+      isMouseDown = true;
+      sliderScrolltrigger.disable();
+      movementX = 0;
+    },
+    mousemove: (e) => {
+      if (isMouseDown) {
+        movementX += e.originalEvent.movementX;
 
-      gsap.to($slider, {
-        rotationY: '+=' + movementX * -0.2,
-        overwrite: true,
-        duration: 1,
-        onComplete() {
-          sliderScrolltrigger.enable();
-        },
-      });
-    }
+        gsap.to('.slider', {
+          rotationY: '+=' + movementX * -0.2,
+          overwrite: true,
+          duration: 1,
+          onComplete() {
+            sliderScrolltrigger.enable();
+          },
+        });
+      }
+    },
+    mouseup: () => (isMouseDown = false),
   });
-  $slider.addEventListener('mouseup', () => {
-    isMouseDown = false;
+
+  ScrollTrigger.create({
+    trigger: '.section-recruit',
+    start: 'top top',
+    onEnter: () => $('.container').removeClass('header-on'),
+    onLeaveBack: () => $('.container').addClass('header-on'),
   });
 
   /* rotate-text */
   gsap.utils.toArray('.rotate-point').forEach((item) => {
     ScrollTrigger.create({
       trigger: item,
-      start: 'bottom 70%',
+      start: 'top 50%',
       onEnter: (self) => self.trigger.classList.add('in'),
     });
   });
