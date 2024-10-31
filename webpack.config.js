@@ -7,6 +7,8 @@ module.exports = {
     main: './src/js/main.js',
     about: './src/js/about.js',
     solution: './src/js/solution.js',
+    contact: './src/js/contact.js',
+    work: './src/js/work.js',
   },
   output: {
     filename: '[name].bundle.js',
@@ -28,6 +30,16 @@ module.exports = {
       template: 'solution.html',
       filename: 'solution.html',
       chunks: ['solution'],
+    }),
+    new HtmlWebpackPlugin({
+      template: 'work.html',
+      filename: 'work.html',
+      chunks: ['work'],
+    }),
+    new HtmlWebpackPlugin({
+      template: 'contact.html',
+      filename: 'contact.html',
+      chunks: ['contact'],
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: 'src/image', to: 'src/image' }],

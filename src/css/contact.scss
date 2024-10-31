@@ -1,0 +1,241 @@
+@import 'reset', 'common';
+
+.main * {
+  color: #fff;
+}
+.main {
+  background-color: #000;
+  text-transform: uppercase;
+}
+
+.section-intro {
+  .bg-container {
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  &__h1 {
+    font-size: 15vw;
+    padding-bottom: 0.1em;
+    font-weight: 300;
+    letter-spacing: -0.05em;
+  }
+  &__text {
+    width: 80vw;
+    margin: 0 auto;
+    font-size: clamp(26px, 3.5vw, 80px);
+    font-weight: 300;
+    padding: 3em 0;
+    line-height: 1.5;
+    .en {
+      letter-spacing: -0.05em;
+      text-align: right;
+      margin-bottom: 1em;
+      * {
+        mix-blend-mode: difference;
+      }
+    }
+    .ko {
+      letter-spacing: -0.02em;
+      width: max-content;
+      margin-left: auto;
+      font-size: 0.33em;
+      * {
+        color: #000;
+      }
+    }
+  }
+}
+.section-horizText {
+  background-color: #fff;
+  * {
+    color: #000;
+  }
+  &__text {
+    height: 100vh;
+    font-weight: 300;
+    letter-spacing: -0.05em;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.5vw;
+    will-change: transform;
+    .big-text {
+      width: fit-content;
+      font-size: min(19.5em, 650px);
+      white-space: nowrap;
+      padding: 0 10vw;
+    }
+    .small-text {
+      font-size: min(1em, 22px);
+      line-height: 1.5;
+      margin-left: 60%;
+    }
+  }
+  &__imgList {
+    position: relative;
+    width: 50vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+    padding-bottom: 100vh;
+    li {
+      width: 50%;
+      &:nth-child(2n) {
+        margin-left: auto;
+      }
+      &:nth-child(2) {
+        transform: translateX(50%);
+      }
+      &:nth-child(3) {
+        transform: translateX(-50%);
+      }
+      &:nth-child(4) {
+        transform: translateX(25%);
+      }
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.section-member {
+  $img-width: 90vw;
+  $padding-top: 100vh;
+
+  position: relative;
+  padding: $padding-top 0 100px;
+  margin-top: -$padding-top;
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    clip-path: circle(30vw at 50% calc($padding-top + 30vw + 10vw));
+    // paddingTop + circleRadius + littleSpace
+    transition: 0.5s;
+    &.active {
+      clip-path: circle(130vw at 50% calc($padding-top + 30vw + 10vw));
+    }
+  }
+  &__text {
+    position: relative;
+    font-size: 12vw;
+    text-align: center;
+    word-break: keep-all;
+    font-weight: 300;
+    span {
+      mix-blend-mode: difference;
+    }
+    .tag {
+      background: #000 !important;
+      border: none !important;
+      cursor: pointer;
+      &--instagram {
+        top: 12%;
+        left: 40%;
+      }
+      &--contact {
+        left: 25%;
+        bottom: 5%;
+      }
+      &--youtube {
+        right: 25%;
+        bottom: 12%;
+      }
+    }
+  }
+  &__imgWrapper {
+    $aspect_ratio_numerator: 445;
+    $aspect_ratio_denominator: 198;
+
+    position: relative;
+    margin: 20px auto;
+    height: calc(
+      $img-width * ($aspect_ratio_denominator / $aspect_ratio_numerator)
+    );
+    overflow: hidden;
+    border-radius: 10px;
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: $img-width;
+      height: 100%;
+    }
+  }
+  address {
+    position: relative;
+    display: flex;
+    width: $img-width;
+    margin: 0 auto;
+    font-size: clamp(11px, 1vw, 15px);
+    * {
+      color: #000;
+    }
+    .tell {
+      margin-left: auto;
+      margin-right: 1em;
+    }
+  }
+}
+
+/* Animation */
+.section-intro {
+  transition: background-color 0.5s 0.2s;
+  &.active {
+    background-color: #fff;
+  }
+}
+.section-horizText {
+  &__text {
+    transition: background-color 0.5s;
+    .come i {
+      opacity: 0;
+    }
+    &.active {
+      background-color: #000;
+      * {
+        color: #fff;
+      }
+      .come i {
+        opacity: 1;
+        @for $i from 1 through 4 {
+          &:nth-child(#{$i}) {
+            transition: 0.4s #{0.2 * $i}s;
+          }
+        }
+      }
+    }
+  }
+}
+.section-member {
+  &__text {
+    .tag {
+      translate: 0 400%;
+      opacity: 0;
+      visibility: hidden;
+      &.active {
+        translate: 0;
+        opacity: 1;
+        visibility: inherit;
+      }
+      &:hover {
+        rotate: 15deg;
+      }
+      @for $i from 1 through 3 {
+        &:nth-of-type(#{$i}) {
+          $delay: #{0.4 * ($i - 1)}s;
+          transition: translate 0.4s $delay, opacity 0.4s $delay, rotate 0.4s;
+        }
+      }
+    }
+  }
+}

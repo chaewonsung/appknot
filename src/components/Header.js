@@ -2,6 +2,7 @@ import Component from './Component.js';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { head } from 'lodash';
 
 export default class Header extends Component {
   template() {
@@ -12,7 +13,7 @@ export default class Header extends Component {
             <li><a href="solution.html">solution</a></li>
             <li><a href="about.html">about</a></li>
             <li><a href="#">work</a></li>
-            <li><a href="#">contact</a></li>
+            <li><a href="contact.html">contact</a></li>
           </ul>
         </nav>
       </div>
@@ -26,7 +27,7 @@ export default class Header extends Component {
             <li><a href="solution.html">solution</a></li>
             <li><a href="about.html">about</a></li>
             <li><a href="#">work</a></li>
-            <li><a href="#">contact</a></li>
+            <li><a href="contact.html">contact</a></li>
           </ul>
         </nav>
       </div>
@@ -43,14 +44,22 @@ export default class Header extends Component {
   executeGSAP() {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+    let isHeaderAnimated = false;
+    addEventListener('scroll', () => {
+      if (scrollY && !isHeaderAnimated) {
+        headerTl.play();
+        isHeaderAnimated = true;
+      }
+      if (!scrollY) {
+        headerTl.reverse();
+        isHeaderAnimated = false;
+      }
+    });
+
     const headerTl = gsap
       .timeline({
+        paused: true,
         scrollTrigger: {
-          trigger: '.header',
-          start: 'center top',
-          onLeaveBack() {
-            headerTl.reverse();
-          },
           invalidateOnRefresh: true,
         },
       })
