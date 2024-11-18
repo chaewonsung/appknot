@@ -1,1 +1,72 @@
 @import 'reset', 'common';
+
+.section-work {
+  position: relative;
+  text-transform: uppercase;
+  padding-bottom: 150px;
+  &__text {
+    position: absolute;
+    top: 15vh;
+    right: 20vw;
+    font-size: 2vw;
+    white-space: nowrap;
+    line-height: 1.5;
+    .ko {
+      font-size: 0.7em;
+      width: max-content;
+      margin-left: auto;
+      margin-top: 20px;
+      .rotate-wrapper:last-child span{
+        margin-left: 30px;
+      }
+    }
+  }
+  &__workList {
+    position: relative;
+    padding-top: 50vh;
+    h1 {
+      position: absolute;
+      top: 50vh;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      font-size: 13vw;
+      font-weight: 300;
+      letter-spacing: -0.05em;
+
+      //gsap 관련 프로퍼티
+      transform-origin: bottom center;
+      z-index: 1;
+      .tag {
+        right: 0;
+        top: 1vw;
+      }
+    }
+    ul {
+      $column-gap: 3%;
+
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 40px;
+      column-gap: $column-gap;
+      row-gap: 60px;
+      li {
+        width: calc(50% - $column-gap / 2);
+        a {
+          display: block;
+        }
+        img {
+          width: 100%;
+        }
+        .work-title {
+          font-size: 1vw;
+          h2 {
+            font-size: 1.5em;
+            margin: 15px 0 10px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}

@@ -125,5 +125,10 @@ table {
 }
 a {
   text-decoration: none;
-  color: inherit
+  color: inherit;
+}
+button {
+  padding: 0;
+  border: none;
+  cursor: pointer;
 }

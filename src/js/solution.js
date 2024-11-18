@@ -13,15 +13,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { debounce } from 'lodash';
 import $ from 'jquery';
 
-import Header from '../components/Header.js';
-import Footer from '../components/Footer.js';
-import Line from '../components/Line.js';
-
 window.onload = () => {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  new Header(document.querySelector('.header'));
-  new Footer(document.querySelector('.footer'));
 
   // Matter JS
   const runMatter = (function () {
@@ -176,10 +169,6 @@ window.onload = () => {
   splitTextIntoSpan('.gradient-text-02');
 
   /* section-index.js */
-  $('.section-index')
-    .children('.line')
-    .each((i, line) => new Line(line));
-
   const tagTween = gsap.fromTo(
     '.section-index__text .tag',
     { yPercent: () => 350, autoAlpha: 0 },
@@ -203,6 +192,7 @@ window.onload = () => {
           gsap.set('.section-opening .solutions', {
             paddingLeft: $('.section-index__text .row2').offset().left,
           });
+          $('.section-opening__h1').addClass('in');
         },
       },
     })
@@ -392,12 +382,5 @@ window.onload = () => {
     });
   });
 
-  /* rotate-text */
-  gsap.utils.toArray('.rotate-point').forEach((item) => {
-    ScrollTrigger.create({
-      trigger: item,
-      start: 'top bottom',
-      onEnter: (self) => self.trigger.classList.add('in'),
-    });
-  });
+  import('./common.js');
 };

@@ -301,10 +301,15 @@
       width: 70vw;
 
       img {
+        position: relative;
         width: 100%;
       }
       video {
         position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-45%, 3%);
+        width: 72.5%;
       }
     }
 

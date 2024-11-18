@@ -6,7 +6,7 @@ export default function splitTextIntoSpan(selector) {
 
   targetElem.forEach((elem) => {
     const targetText = elem.textContent;
-    
+
     let result = '';
 
     for (let i = 0; i < targetText.length; i++) {
@@ -20,5 +20,5 @@ export default function splitTextIntoSpan(selector) {
     elem.innerHTML = result;
   });
 
-  return targetElem;
+  return document.querySelectorAll(`${selector} span`);
 }

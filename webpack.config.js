@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 module.exports = {
@@ -42,7 +43,13 @@ module.exports = {
       chunks: ['contact'],
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'src/image', to: 'src/image' }],
+      patterns: [
+        { from: 'src/image', to: 'src/image' },
+        { from: 'src/js/includes', to: 'src/js/includes' },
+      ],
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
     }),
   ],
   mode: 'development',
@@ -64,7 +71,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },

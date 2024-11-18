@@ -37,9 +37,7 @@ window.onload = function () {
   );
   ScrollTrigger.create({
     trigger: '.section-horizText',
-    pinSpacing: false,
-    pin: '.section-horizText__text',
-    pinType: transform,
+    start: 'top top',
     end: 'bottom bottom',
     onUpdate: ({ progress }) =>
       gsap.to(horizTextSecTween, {

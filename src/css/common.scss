@@ -12,6 +12,14 @@
     transform: translateY(0) rotate(0);
   }
 }
+@keyframes infiniteRotate {
+  0% {
+    rotate: 0;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
 
 /* mixin */
 // @mixin rotate-wrapper {
@@ -41,9 +49,16 @@
     }
   }
 }
-.rotate-point.in {
-  span {
-    animation-play-state: running;
+[class*='rotate-point'] {
+  @for $i from 1 through 10 {
+    .rotate-wrapper:nth-child(#{$i}) span {
+      animation-delay: #{0.1 * ($i - 1)}s;
+    }
+  }
+  &.in {
+    span {
+      animation-play-state: running;
+    }
   }
 }
 
@@ -218,7 +233,6 @@ body {
   text-transform: uppercase;
   background-color: #fff;
   color: #000;
-  z-index: 9999;
   .row1,
   .row2 {
     display: flex;
@@ -323,4 +337,204 @@ body {
 }
 .line.in {
   opacity: 1;
+}
+
+/* Contact Modal */
+.contact-modal-container {
+  position: fixed;
+  left: 15px;
+  bottom: 15px;
+  z-index: 999;
+  .contact-badge {
+    position: relative;
+    display: block;
+    width: 80px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: rgba(hsl(0, 0%, 40%), 0.5);
+    backdrop-filter: blur(5px);
+
+    &:hover {
+      img {
+        transform: translateX(-50%);
+      }
+    }
+    &.scroll {
+      img {
+        transform: translateX(-25%);
+      }
+    }
+    svg {
+      margin: auto;
+      animation: infiniteRotate 40s infinite linear;
+      text {
+        text-transform: uppercase;
+        font-size: 5px;
+        fill: rgba(#fff, 0.5);
+        letter-spacing: 0.3em;
+      }
+    }
+    .img-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      rotate: -360deg;
+      width: 30%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      margin: auto;
+      transition: rotate 0.2s;
+      img {
+        width: 400%;
+      }
+    }
+  }
+  .contact-modal {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 5px);
+    &.show {
+      display: flex;
+    }
+  }
+}
+
+.contact-modal {
+  $bd-radius: 7px;
+  $blue: #007dee;
+  $gap: 1px;
+  $text-padding: 1.3em;
+
+  display: flex;
+  gap: $gap;
+  width: clamp(528.204px, 60.853vw, 864.113px);
+  text-transform: uppercase;
+  font-size: clamp(9.687px, 1.116vw, 15.847px);
+  font-weight: 300;
+  > * {
+    flex: 1;
+  }
+  * {
+    color: #fff;
+  }
+  .contact-info {
+    &__top {
+      aspect-ratio: 1/1.1;
+      border-radius: $bd-radius;
+      overflow: hidden;
+      margin-bottom: $gap;
+      > * {
+        height: 50%;
+      }
+      .video-box {
+        video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .text-box {
+        position: relative;
+        background-color: #1e1e1e;
+        padding: $text-padding;
+        line-height: 1.4;
+        .en {
+          font-size: 1.9em;
+          margin-bottom: 0.5em;
+        }
+        .sns {
+          position: absolute;
+          right: $text-padding;
+          bottom: $text-padding;
+          a:nth-child(1) {
+            margin-right: $gap;
+          }
+        }
+      }
+    }
+    &__bottom {
+      display: flex;
+      gap: $gap;
+      text-align: center;
+      > * {
+        flex: 1;
+        padding: 15px 0;
+        border-radius: $bd-radius;
+      }
+      * {
+        font-size: 0.8em;
+      }
+      .tell {
+        background-color: $blue;
+      }
+      .email {
+        background-color: #626262;
+      }
+    }
+  }
+  .contact-chat {
+    display: flex;
+    flex-direction: column;
+    border-radius: $bd-radius;
+    overflow: hidden;
+    &__bar {
+      position: relative;
+      text-align: center;
+      background-color: rgba(hsl(0, 0%, 40%), 0.5);
+      backdrop-filter: blur(5px);
+      padding: 5px 0;
+      .btn-close {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(calc(-50% + 1.5px));
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ed695e;
+      }
+    }
+    &__content {
+      background-color: #1e1e1e;
+      flex: 1;
+      padding: $text-padding;
+      .sender {
+        text-align: right;
+        .time {
+          font-size: 0.8em;
+          opacity: 0.5;
+        }
+        .bubble {
+          margin: 0.5em 0 1em;
+        }
+      }
+      .bubble {
+        display: inline-block;
+        padding: 10px 15px;
+        border: 1px solid rgba(#fff, 0.2);
+        border-radius: 99px;
+        &--blue {
+          text-align: right;
+          background-color: $blue;
+          border: none;
+        }
+        b {
+          font-weight: 500;
+        }
+      }
+      ul {
+        li:not(:last-child) {
+          margin-bottom: 0.5em;
+        }
+        .bubble {
+          cursor: pointer;
+          &:hover {
+            border-color: #fff;
+          }
+        }
+      }
+    }
+  }
 }

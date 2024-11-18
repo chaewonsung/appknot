@@ -3,10 +3,6 @@ import '../css/main.scss';
 import toggleClassWithIo from './utils/toggleClassWithIo.js';
 import toPX from './utils/toPX.js';
 
-import Header from '../components/Header.js';
-import Footer from '../components/Footer.js';
-import Line from '../components/Line.js';
-
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -25,9 +21,6 @@ import Matter from 'matter-js';
 
 window.onload = function () {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  new Header($('.header')[0]);
-  new Footer($('.footer')[0]);
 
   /* Matter JS */
   (function () {
@@ -293,17 +286,20 @@ window.onload = function () {
   });
 
   $('.section-work__item').each(function (i, item) {
-    const target = $('.section-work__hover-text');
     $(item).on({
       mouseleave: () => {
-        target.css('opacity', 0).text('');
+        $('.section-work__hover-text').css('opacity', 0).text('');
       },
-      mousemove: (e) => {
-        target.text(`${item.dataset.hover}`).css({
-          opacity: 1,
-          top: `${e.clientY - $('.section-work').offset().top}px`,
-          left: `${e.clientX}px`,
-        });
+      mousemove: ({ originalEvent: e }) => {
+        $('.section-work__hover-text')
+          .text(`${item.dataset.hover}`)
+          .css({
+            opacity: 1,
+            top: `${
+              e.clientY - $('.section-work')[0].getBoundingClientRect().top
+            }px`,
+            left: `${e.clientX}px`,
+          });
       },
     });
   });
@@ -333,9 +329,6 @@ window.onload = function () {
     );
 
   /* section-recruit.js */
-  // create line
-  $('.line').each((i, line) => new Line(line));
-
   // change bg-color
   toggleClassWithIo($('.section-recruit')[0], 'in', { threshold: 0.3 });
 
@@ -344,8 +337,7 @@ window.onload = function () {
 
   const sliderScrolltrigger = ScrollTrigger.create({
     trigger: '.slider',
-    endTrigger: '.footer',
-    end: 'bottom bottom',
+    end: '+=400%',
     scrub: 1,
     onUpdate({ progress, direction, trigger }) {
       if (!initialProgress) {
@@ -396,12 +388,5 @@ window.onload = function () {
     onLeaveBack: () => $('.container').addClass('header-on'),
   });
 
-  /* rotate-text */
-  gsap.utils.toArray('.rotate-point').forEach((item) => {
-    ScrollTrigger.create({
-      trigger: item,
-      start: 'top 50%',
-      onEnter: (self) => self.trigger.classList.add('in'),
-    });
-  });
+  import('./common.js');
 };

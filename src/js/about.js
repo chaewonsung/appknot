@@ -7,16 +7,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import _ from 'lodash';
-
-import Header from '../components/Header.js';
-import Footer from '../components/Footer.js';
 import $ from 'jquery';
 
 document.addEventListener('DOMContentLoaded', () => {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  new Header(document.querySelector('.header'));
-  new Footer(document.querySelector('.footer'));
 
   /**
    * section-history.js
@@ -328,10 +322,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('resize', handleResize);
 
-  /* rotate-text */
-  ScrollTrigger.batch('.rotate-point', {
-    start: 'bottom bottom',
-    onEnter: (batch) => batch.forEach((el) => el.classList.add('in')),
-    once: true,
-  });
+  import('./common.js');
 });

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="contact-modal-container">
+      <button type="button" class="contact-badge">
+        <svg width="70" height="70" fill="transparent" style="display: block">
+          <defs>
+            <path id="textCurve" d="M 35 70 A 1 1 0 0 1 35 1 A 1 1 0 0 1 35 70"></path>
+            <path id="textCurve2" d="M 35 70 A 1 1 0 0 0 35 1"></path>
+          </defs>
+          <text>
+            <textPath href="#textCurve">
+              <tspan dy="4">excuse me! attention, please!</tspan>
+            </textPath>
+          </text>
+          <text>
+            <textPath href="#textCurve2" startOffset="5%">
+              the inquiry is here
+            </textPath>
+          </text>
+        </svg>
+        <div class="img-box">
+          <img src="src/image/icn_group_contact.webp" alt="" />
+        </div>
+      </button>
+      <div class="contact-modal">
+        <div class="contact-info">
+          <div class="contact-info__top">
+            <div class="video-box">
+              <video
+                src="src/image/vid_contact.mp4"
+                autoplay
+                loop
+                muted
+              ></video>
+            </div>
+            <div class="text-box">
+              <div class="en split">oh, are you interested in us?</div>
+              <div class="ko">
+                <p class="split">어떤 프로젝트든 의뢰해주세요.</p>
+                <p class="split">앱노트라면 가능합니다.</p>
+              </div>
+              <div class="sns">
+                <a href=""><img src="src/image/img_icon_insta.svg" alt="" /></a
+                ><a href=""
+                  ><img src="src/image/img_icon_youtube.svg" alt=""
+                /></a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-info__bottom">
+            <a href="" class="tell">(+82) 2 702 5527</a
+            ><a href="" class="email">contact@appknot.com</a>
+          </div>
+        </div>
+        <div class="contact-chat">
+          <div class="contact-chat__bar">
+            let's work together✋<button
+              type="button"
+              class="btn-close"
+            ></button>
+          </div>
+          <div class="contact-chat__content">
+            <div class="sender">
+              <div class="time">15:15</div>
+              <i class="bubble bubble--blue">
+                필요하신 서비스를 선택해 주세요.
+              </i>
+            </div>
+            <ul>
+              <li>
+                <a class="bubble"
+                  >사용자를 고려한 <b>모바일 앱</b>을 만들고 싶어요.</a
+                >
+              </li>
+              <li>
+                <a class="bubble"
+                  >누구나 편리한 <b>웹사이트</b>를 만들고 싶어요.</a
+                >
+              </li>
+              <li>
+                <a class="bubble">기존 시스템을 <b>개편</b>하고싶어요.</a>
+              </li>
+              <li>
+                <a class="bubble">꽂히는 <b>디지털 마케팅</b>이 필요해요.</a>
+              </li>
+              <li>
+                <a class="bubble">기가 막힌 <b>디자인</b>이 필요해요.</a>
+              </li>
+              <li>
+                <a class="bubble"
+                  >여기에 목록이 없지만, <b>앱노트와 함께 일하고 싶어요.</b></a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

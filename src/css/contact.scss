@@ -49,6 +49,8 @@
 }
 .section-horizText {
   background-color: #fff;
+  will-change: transform;
+
   * {
     color: #000;
   }
@@ -61,7 +63,6 @@
     flex-direction: column;
     justify-content: center;
     font-size: 1.5vw;
-    will-change: transform;
     .big-text {
       width: fit-content;
       font-size: min(19.5em, 650px);
@@ -195,7 +196,10 @@
   }
 }
 .section-horizText {
+  position: relative;
   &__text {
+    position: sticky;
+    top: 0;
     transition: background-color 0.5s;
     .come i {
       opacity: 0;
