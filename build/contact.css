@@ -820,6 +820,7 @@ body {
   transform: translate(-50%, -50%);
   width: 90vw;
   height: 100%;
+  filter: blur(3px);
 }
 .section-member address {
   position: relative;

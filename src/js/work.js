@@ -23,17 +23,8 @@ window.onload = () => {
         clearProps: 'all',
       }
     )
-    .fromTo('h1', { scale: 1.4 }, { scale: 1 })
-    .fromTo(
-      'ul .anim-target',
-      {
-        xPercent: (i) => (i ? -50 : 50),
-        yPercent: -50,
-        rotate: (i) => (i ? -70 : -50),
-      },
-      { xPercent: 0, yPercent: 0, rotate: 0 },
-      '<'
-    )
+    .fromTo('h1', { scale: 1.4 }, { scale: 1, clearProps: 'scale' })
+    .to('ul .anim-target', { transform: 'none' }, '<')
     .to(
       '.rotate-point--custom',
       {

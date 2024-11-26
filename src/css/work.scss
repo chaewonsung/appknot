@@ -8,15 +8,15 @@
     position: absolute;
     top: 15vh;
     right: 20vw;
-    font-size: 2vw;
     white-space: nowrap;
     line-height: 1.5;
+    font-size: 1.5rem;
     .ko {
       font-size: 0.7em;
       width: max-content;
       margin-left: auto;
       margin-top: 20px;
-      .rotate-wrapper:last-child span{
+      .rotate-wrapper:last-child span {
         margin-left: 30px;
       }
     }
@@ -65,6 +65,12 @@
             margin: 15px 0 10px;
             font-weight: 500;
           }
+        }
+        &.anim-target:first-child {
+          transform: translate(50%, -50%) rotate(-50deg);
+        }
+        &.anim-target:nth-child(2) {
+          transform: translate(-50%, -50%) rotate(-70deg);
         }
       }
     }
