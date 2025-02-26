@@ -78,12 +78,19 @@ window.onload = function () {
     mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
 
     let scale;
-    if (cw >= 1600) scale = 0.8;
-    else if (cw >= 1300) scale = 0.7;
-    else if (cw >= 1024) scale = 0.55;
-    else if (cw >= 600) scale = 0.4;
-    else if (cw >= 470) scale = 0.3;
-    else scale = 0.2;
+    if (cw >= 1600) {
+      scale = 0.8;
+    } else if (cw >= 1300) {
+      scale = 0.7;
+    } else if (cw >= 1024) {
+      scale = 0.55;
+    } else if (cw >= 600) {
+      scale = 0.4;
+    } else if (cw >= 470) {
+      scale = 0.3;
+    } else {
+      scale = 0.2;
+    }
 
     class Symbol {
       constructor(path, name) {

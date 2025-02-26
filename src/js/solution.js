@@ -38,7 +38,7 @@ window.onload = () => {
       Composites,
       Common,
       Svg,
-      World,
+      Events,
     } = Matter;
 
     Common.setDecomp(require('poly-decomp'));
@@ -150,18 +150,31 @@ window.onload = () => {
       '.section-popee__horizontal-03 .canvas-text'
     );
 
-    function renderText() {
-      $canvasTextArr.forEach((text, i) => {
-        text.style.top = `${stack.bodies[i].position.y}px`;
-        text.style.left = `${stack.bodies[i].position.x}px`;
+    const renderTextFuncArr = stack.bodies.map((body, i) => {
+      let frameId;
+
+      Events.on(body, 'sleepStart', () => {
+        cancelAnimationFrame(frameId);
       });
-      requestAnimationFrame(renderText);
-    }
-    renderText();
+      Events.on(body, 'sleepEnd', () => {
+        frameId = requestAnimationFrame(renderText);
+      });
+
+      function renderText() {
+        $canvasTextArr[
+          i
+        ].style.transform = `translate(calc(-50% + ${body.position.x}px), calc(-50% + ${body.position.y}px))`;
+
+        frameId = requestAnimationFrame(renderText);
+      }
+
+      return () => requestAnimationFrame(renderText);
+    });
 
     return function runMatter() {
       Render.run(render);
       Runner.run(runner, engine);
+      renderTextFuncArr.forEach((func) => func());
     };
   })();
 
